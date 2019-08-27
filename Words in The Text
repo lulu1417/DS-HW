@@ -1,0 +1,94 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define MAX 1000
+#define LENGTH 1000
+int main(){
+      char str[MAX][LENGTH];
+      char capital[MAX][LENGTH];
+      char text[1000];
+      char* result;
+      char* tmp;
+      char* pStr[MAX];
+      char* pCapital[MAX];
+	    int i=0,j=0,totalwords=0,tmpN=0,times=0;
+	    int cnt[1000];
+
+	    for(i=0;i<MAX;i++){
+
+                scanf("%s",str[i]);
+                totalwords++;
+
+                    if(strstr(str[i],"-----")!=NULL&&strlen(str[i])==5){
+                        break;
+                    }
+                 pStr[i] = str[i];
+            }
+
+        getchar();
+
+        while(text[i-1]!=EOF){
+            text[i]=fgetc(stdin);
+            i++;
+        }
+
+      for(j=0;j<totalwords-1;j++){
+           cnt[j]=0;
+           for(i=0;text[i-1]!=EOF;i++){
+              result=strstr(&text[i],str[j]);
+
+              if(result==&text[i] && (
+                                 ( text[i-1]<48 || text[i-1]>122 || (text[i-1]>57 && text[i-1]<65) || (text[i-1]>90 && text[i-1]<97) )&&
+                                 ( text[i+strlen(str[j])]<48 || text[i+strlen(str[j])]>122 ||(text[i+strlen(str[j])]>90 && 
+                                   text[i+strlen(str[j])]<97) ||(text[i+strlen(str[j])]>57 && text[i+strlen(str[j])]<65) )
+                                )){
+              cnt[j]++;
+              }
+           }
+      }
+      for(i=0;i<totalwords-1;i++){
+          for(j=i+1;j<totalwords-1;j++)
+              if(cnt[j]>cnt[i]){
+                  tmpN = cnt[j];
+                  cnt[j] = cnt[i];
+                  cnt[i] = tmpN;
+
+                  tmp = pStr[i];
+                  pStr[i] = pStr[j];
+                  pStr[j] = tmp;
+          }
+          if(cnt[i]==cnt[0]){
+                  times++;
+          }
+        }
+        for(i=0;i<times;i++){
+                j=0;
+                while(*(pStr[i]+j)){
+                        capital[i][j] = (int)*(pStr[i]+j);
+                        if(*(pStr[i]+j)<91&&*(pStr[i]+j)>64)
+                        capital[i][j] = (int)*(pStr[i]+j)+32;
+                        j++;
+                }
+
+                pCapital[i] = capital[i];
+        }
+
+        for(i=0;i<times;i++){
+                for(j=i+1;j<times;j++){
+                       if(strcmp(pCapital[i],pCapital[j])>0){
+                                tmp=pCapital[i];
+                                pCapital[i]=pCapital[j];
+                                pCapital[j]=tmp;
+
+                                tmp=pStr[i];
+                                pStr[i]=pStr[j];
+                                pStr[j]=tmp;
+                       }
+                }
+        }
+        for(i=0;i<times;i++){
+              printf("%s %d\n",pStr[i],cnt[0]);
+        }
+            return 0;
+}
+

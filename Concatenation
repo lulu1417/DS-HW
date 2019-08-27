@@ -1,0 +1,87 @@
+#include<stdio.h>
+#include<stdlib.h>
+//#include<string.h>
+
+int main(){
+	char str[1000];
+   	char odd[1000]="\0";
+   	char even[1000]="\0";
+   	char sum[1000];
+   	char temp1[1000];
+   	char temp2[1000];
+	
+   	int len1=0;
+   	int len2=0;
+   	int n=0, i=0, j=0;
+   	int maxLen=0;
+   	int nSum=0;
+   	int nCarryBit=0;
+   	int nOverFlow=0;
+
+	scanf("%d",&n); //numbers of items
+	for(i=0;i<n;i++){
+		scanf("%s",str);
+
+			if(i%2==0){
+				strcat(odd, str);
+			}
+			else{
+				strcat(even, str);
+			}
+
+	}
+
+	len1 = strlen(odd);
+	len2 = strlen(even);
+
+	for (i = len1 - 1; i >= 0; --i){
+		temp1[j++] = odd[i];
+	}
+
+	j=0;
+	for (i = len2 - 1; i >= 0; --i){
+		temp2[j++] = even[i];
+	}
+
+	maxLen = (len1>len2)?len1:len2;
+	if(len1<len2){
+		for(i=len1;i<len2;++i)
+			temp1[i] = '0';
+			temp1[len2]='\0';
+	 }
+
+	 else if(len1>len2){
+	 	for(i=len2;i<len1;++i)
+	 		temp2[i]=48;  //'\0'=48
+	 		temp2[len1]=5;
+	 }
+
+	for(i=0;i<maxLen;i++){
+		nSum =temp1[i]-48+temp2[i]-48+nCarryBit;
+
+		if(nSum>9){
+			if(i==(maxLen-1)){
+				nOverFlow=1;
+			}
+			nCarryBit=1;
+			sum[i]=nSum-10+48;
+		}
+		else{
+			nCarryBit=0;
+			sum[i]=nSum+48; 
+		}
+
+	 }
+	
+	if(nOverFlow==1){
+		sum[maxLen++]=nCarryBit+48;
+	}
+	sum[maxLen]='\0';
+	for(i=maxLen-1;i>=0;--i)
+		printf("%c",sum[i]);
+	printf("\n");
+
+	return 0;
+
+}
+

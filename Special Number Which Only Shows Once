@@ -1,0 +1,43 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+int main()
+{
+	int n=0, m=0, i=0, k=0, j=0;
+	int test[1000];
+	int data=0;
+   
+	scanf("%d",&n);
+	
+	for(i=0;i<n;i++){
+		for (j=0;j<1000;j++){ 
+            	test[j]=0;
+        }
+   
+        scanf("%d",&m);		
+        
+	if(m%2==1){	
+		
+		for(j=0;j<m;j++){
+			
+	        scanf("%d",&data);
+	        
+		test[data]++;
+	        
+		}
+		
+		for(k=0;k<1000;k++){
+
+		    if(test[k]==1){
+			printf("%d\n",k);
+
+		   }
+		}
+        	
+        }
+        		
+	}
+	
+	return 0;
+} 
+

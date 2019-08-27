@@ -1,0 +1,164 @@
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <string.h>
+  #define MAX 1000
+
+ typedef struct BSTnode {
+        char word[MAX];
+        int cnt;
+        struct BSTnode *left, *right;
+  }BSTnode;
+
+BSTnode * createNode(char *word);
+void insert(char *word, int cnt);
+void findElement(char *str);
+void deleteNode(char *str);
+void preorderTraversal(BSTnode *myNode);
+
+  BSTnode *root = NULL;
+
+  int main() {
+
+        char str[200];
+        int ch;
+
+        while((ch = getchar())!=EOF){
+            scanf("%s",str);
+            getchar();
+            int cnt = 0;
+            if(ch=='+'){
+                insert(str, cnt);
+
+            }
+        	else if(ch=='-'){
+                findElement(str);
+            }
+
+        }
+        preorderTraversal(root);
+
+        return 0;
+  }
+
+    BSTnode * createNode(char *word) {
+        BSTnode *newnode;
+        newnode = (BSTnode *)malloc(sizeof(BSTnode));
+        strcpy(newnode->word, word);
+        newnode->cnt = 1;
+        newnode->left = newnode->right = NULL;
+        return newnode;
+  }
+
+  void insert(char* word, int cnt) {
+        BSTnode *parent = NULL, *current = NULL, *newnode = NULL;
+        int res = 0;
+        if (!root) {
+                root = createNode(word);
+                return;
+        }
+        for (current = root; current !=NULL;current = (res > 0) ? current->right : current->left){
+                res = strcmp(word, current->word);
+
+                if (res==0) {
+                    current->cnt += 1;
+                        return;
+                }
+                parent = current;
+        }
+        newnode = createNode(word);
+        res > 0 ? (parent->right = newnode) : (parent->left = newnode);
+        return;
+  }
+
+  void findElement(char *str) {
+        struct BSTnode *temp = NULL;
+        int flag = 0, res = 0;
+        temp = root;
+        while (temp) {
+                if ((res = strcasecmp(temp->word, str)) == 0) {
+
+                        temp->cnt -= 1;
+                        if(temp->cnt==0){
+                            deleteNode(str);
+                                    }
+                        break;
+                }
+                temp = (res > 0) ? temp->left : temp->right;
+        }
+        return ;
+  }
+
+    void deleteNode(char *str) {
+        BSTnode *parent = NULL, *current = NULL, *temp = NULL;
+        int flag = 0, res = 0;
+        current = root;
+        while (1) {
+                res = strcasecmp(current->word, str);
+                if (res == 0)
+                        break;
+                flag = res;
+                parent = current;
+                current = (res > 0) ? current->left : current->right;
+                if (current == NULL)
+                        return;
+        }
+        /* deleting leaf node */
+        if (current->right == NULL) {
+                if (current == root && current->left == NULL) {
+                        free(current);
+                        root = NULL;
+                        return;
+                } else if (current == root) {
+                        root = current->left;
+                        free (current);
+                        return;
+                }
+
+                flag > 0 ? (parent->left = current->left) :
+                                (parent->right = current->left);
+        } else {
+                /* delete node with single child */
+                temp = current->right;
+                if (!temp->left) {
+                        temp->left = current->left;
+                        if (current == root) {
+                                root = temp;
+                                free(current);
+                                return;
+                        }
+                        flag > 0 ? (parent->left = temp) :
+                                        (parent->right = temp);
+                } else {
+                        /* delete node with two children */
+                        BSTnode *successor = NULL;
+                        while (1) {
+                                successor = temp->left;
+                                if (!successor->left)
+                                        break;
+                                temp = successor;
+                        }
+                        temp->left = successor->right;
+                        successor->left = current->left;
+                        successor->right = current->right;
+                        if (current == root) {
+                                root = successor;
+                                free(current);
+                                return;
+                        }
+                        (flag > 0) ? (parent->left = successor) :
+                                        (parent->right = successor);
+                }
+        }
+        free (current);
+        return;
+  }
+
+  void preorderTraversal(BSTnode *myNode) {
+        if (myNode) {
+                preorderTraversal(myNode->left);
+                printf("%s %d", myNode->word, myNode->cnt);
+                printf("\n");
+                preorderTraversal(myNode->right);
+        }
+        return;
+  }

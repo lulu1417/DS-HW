@@ -1,0 +1,57 @@
+#include<stdio.h>
+#define MAX 10000
+#define INF 10000
+int map[MAX][MAX];
+int distance[MAX];
+int visit[MAX];
+int i,j,totalpath,p,x,y,a,b,c,min,temp;
+
+int main (){
+    scanf("%d",&totalpath);
+    p = 2*totalpath;
+
+    for(i = 1 ; i < p ; i++){
+    	for(j = 1 ; j <= p ; j++){
+        map[i][j] = INF;
+        }
+    }
+
+    for(i = 1 ; i <=totalpath ; i++){
+        scanf("%d%d%d",&a,&c,&b);
+        map[a][b] = map[b][a] = c;
+    }
+
+    scanf("%d %d",&x,&y);
+
+    for(i = 1 ; i <= p ; i++){
+        visit[i] = 0;
+        distance[i] = map[x][i];
+    }
+
+   for(i = 1 ; i < p ; i++){
+    	min = INF;
+      for(j = 1 ; j <= p ; j++){
+            if(visit[j]!=1 && min > distance[j]){
+                temp = j;
+                min = distance[j];
+            }
+      }
+      visit[temp] = 1;
+
+      for(j = 1 ; j <= p ; j++){
+    	  if(visit[j]!=1 && (distance[j] > (distance[temp] + map[temp][j]))){
+        	distance[j] = distance[temp] + map[temp][j];
+        }
+      }
+   }
+
+   if(distance[y]==INF)
+       printf("404\n");
+
+   else
+       printf("%d",distance[y]);
+
+   return 0;
+}
+
+
