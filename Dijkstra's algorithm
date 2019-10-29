@@ -10,28 +10,28 @@ int main (){
     scanf("%d",&totalpath);
     p = 2*totalpath;
 
-    for(i = 1 ; i < p ; i++){
+    for(i = 1 ; i < p ; i++){ //set the distance of all vertexes to others infinate 
     	for(j = 1 ; j <= p ; j++){
         map[i][j] = INF;
         }
     }
 
-    for(i = 1 ; i <=totalpath ; i++){
+    for(i = 1 ; i <=totalpath ; i++){ // 更改有指定的點到點路徑長
         scanf("%d%d%d",&a,&c,&b);
         map[a][b] = map[b][a] = c;
     }
 
     scanf("%d %d",&x,&y);
 
-    for(i = 1 ; i <= p ; i++){
-        visit[i] = 0;
-        distance[i] = map[x][i];
+    for(i = 1 ; i <= p ; i++){ 
+        visit[i] = 0; //visit[]紀錄是否已造訪過
+        distance[i] = map[x][i]; //x到每個點的距離
     }
 
    for(i = 1 ; i < p ; i++){
     	min = INF;
       for(j = 1 ; j <= p ; j++){
-            if(visit[j]!=1 && min > distance[j]){
+            if(visit[j]!=1 && min > distance[j]){ 
                 temp = j;
                 min = distance[j];
             }
