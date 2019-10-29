@@ -49,9 +49,18 @@ int main (){
        printf("404\n");
 
    else
-       printf("%d",distance[y]);
+       printf("%d\n",distance[y]);
 
    return 0;
 }
+/* example
+totalPath = 3
+point length point
+1 10 2
+2 4 3
+3 5 1
+1 2
+output: 9
+*/
 
 
